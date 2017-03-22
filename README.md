@@ -3,13 +3,13 @@
 
 ### Geomorphic Flood Area
 ----------
-<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/icona.png"   width="100" height="100" //></p>
+<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/icona.png"   width="150" height="150" //></p>
 
 **GFA - tool** is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI), (Manfreda et al., 2015; Samela et al., 2016; Samela et al., 2017a)
 
 ## Table of Contents
 
-* [**Team/Authors**](#team-authors)
+* [**Team - HydroLAB**](#team)
 * [**Project Details**](#project-details)  
     * [Scope](#scope)
     * [Background](#background)
@@ -47,10 +47,11 @@ Samela et al. (2017b) proposed a practical and cost-effective procedure for the 
 This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/LICENSE.txt).
 
 ### Metadata
+
 | Metadata Title	| Description 	|
 |:--------------------:	|:-------------------------------:	|:--------------------------------:	|
 |       Current Code version       	|           v. 1.0             	|                           	|
-|    Permanent link to code / repository used of this code version      	|         https://github.com/HydroLab/GeomorphicFloodArea           |
+|    Permanent link to code / repository used of this code version      	|         https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area           |
 |      Software Code Language used        	|             Python (v. 2.7)           
 |      Compilation requirements, Operating environments & dependencies  |            QGIS 2 or higher   
 |      Computing platform / Operating System   |            Linux, OS X, Microsoft Windows  
