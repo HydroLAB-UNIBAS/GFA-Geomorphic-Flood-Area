@@ -34,7 +34,7 @@
 
 - [Raffaele Albano](http://www2.unibas.it/raffaelealbano) (Co-Founder of [Wat-TUBE](http://wat-tube.it) spin-off UNIBAS, Research Associate at University of Basilicata (UNIBAS))
 - Samela Caterina (Research Associate at University of Basilicata (UNIBAS))
-- Aurelia Sole (Professor at University of Basilicata (UNIBAS)
+- Aurelia Sole (Professor at University of Basilicata [(UNIBAS)] (http://portale.unibas.it/site/home.html))
 - [Salvatore Manfreda](http://www2.unibas.it/manfreda/HydroLab) (Professor at University of Basilicata, Head of HydroLAB, Co-Founder of [Wat-TUBE](http://wat-tube.it) spin-off UNIBAS)
 
 <p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/HydroLAB.PNG" alt="icon.png" width="300" height="100" /></p>
@@ -56,20 +56,10 @@ This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS
 |----------------|-------------|
 |  Current Code version              |    v. 1.0         |
 |   Permanent link to code / repository used of this code version             |       https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area       |
-|                |             |
-|                |             |
-|                |             |
-|                |             |
-
-
-| Metadata Title	| Description 	|
-|:--------------------:	|:-------------------------------:	|:--------------------------------:	|
-|       Current Code version       	|           v. 1.0             	|                           	|
-|    Permanent link to code / repository used of this code version      	|         https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area           |
-|      Software Code Language used        	|             Python (v. 2.7)           
-|      Compilation requirements, Operating environments & dependencies  |            QGIS 2 or higher   
-|      Computing platform / Operating System   |            Linux, OS X, Microsoft Windows  
-|      License   |            GNU GPL v.2
+|       Software Code Language used          |        Python (v. 2.7)       |
+|    Compilation requirements, Operating environments & dependencies             |    QGIS 2 or higher         |
+|   Computing platform / Operating System             |   Linux, OS X, Microsoft Windows          |
+|     License           |      GNU GPL v.2       |
 
 ## GFA Installation Instruction
 **GFA - tool** can be installed in [QGIS](https://qgis.org) using the Plugin Manager (see [here](http://docs.qgis.org/2.8/en/docs/user_manual/plugins/plugins.html#managing-plugins)). The plugin was tested on the 2.14 ltr release of QGIS. It uses the python library of QGIS core. 
