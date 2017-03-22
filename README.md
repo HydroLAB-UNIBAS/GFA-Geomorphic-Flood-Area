@@ -3,7 +3,7 @@
 
 ### Geomorphic Flood Area
 ----------
-<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/tree/master/GeomorphicFloodIndex/icona.png"   width="150" height="150" //></p>
+<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/GeomorphicFloodIndex/icona.png"   width="150" height="150" //></p>
 
 **GFA - tool** is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI), (Manfreda et al., 2015; Samela et al., 2016; Samela et al., 2017a)
 
@@ -37,7 +37,7 @@
 - Aurelia Sole (Professor at University of Basilicata [(UNIBAS)] (http://portale.unibas.it/site/home.html))
 - [Salvatore Manfreda](http://www2.unibas.it/manfreda/HydroLab) (Professor at University of Basilicata, Head of HydroLAB, Co-Founder of [Wat-TUBE](http://wat-tube.it) spin-off UNIBAS)
 
-<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/tree/master/GeomorphicFloodIndex/HydroLAB.PNG" alt="icon.png" width="300" height="100" /></p>
+<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/GeomorphicFloodIndex/HydroLAB.PNG="300" height="100" /></p>
 
 ## Project Details
 Learn more about the **GFA** project: scope, background and licensing.
@@ -49,7 +49,7 @@ Nowadays, the most used approach to modelling fluvial hydraulics and to obtain h
 Samela et al. (2017b) proposed a practical and cost-effective procedure for the preliminarily delineation of the flood-prone areas in data poor environments and for large-scale analyses based on information easily available worldwide.  The potentials of a geomorphic classifier, based on the recently proposed Geomorphic Flood Index, have been implemented in the open-source geographic information system Quantum GIS in the form of a new plugin named Geomorphic Flood Area – tool (GFA – tool) designed to create a user-friendly interface for the detection of the food-prone areas. Moreover, the tool allows also to generate a number of complementary information, such as the GFI, that may be used as ancillary data for remote sensing detection of inundated areas. 
 
 ### License
-This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/tree/master/GeomorphicFloodIndex/LICENSE.txt).
+This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/GeomorphicFloodIndex/LICENSE.txt).
 
 ### Metadata
 | Metadata Title | Description |
