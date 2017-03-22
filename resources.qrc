@@ -1,5 +1,0 @@
-<RCC> 
-  <qresource prefix="/plugins/GeomorphicFloodIndex" > 
-    <file>icona.png</file> 
-  </qresource> 
-</RCC> 
