@@ -53,7 +53,14 @@ This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS
 
 ### Metadata
 | Metadata Title | Description |
-|--------------------|-------------------------------- |---------------------------------|
+|----------------|-------------|
+|  Current Code version              |    v. 1.0         |
+|   Permanent link to code / repository used of this code version             |       https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area       |
+|                |             |
+|                |             |
+|                |             |
+|                |             |
+
 
 | Metadata Title	| Description 	|
 |:--------------------:	|:-------------------------------:	|:--------------------------------:	|
