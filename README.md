@@ -27,13 +27,12 @@
 * [**Bug Report**](#bug-report)
 
 ## Team - HydroLAB
-<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/HydroLAB.PNG" alt="icon.png" width="300" height="100" /></p>
-
 - [Raffaele Albano] (http://www2.unibas.it/raffaelealbano/) (Co-Founder of [Wat-TUBE] (http://wat-tube.it/index.php/it/) spin-off UNIBAS, Research Associate at University of Basilicata (UNIBAS))
 - [Samela Caterina] (hhttp://www2.unibas.it/manfreda/HydroLab/home.html) (Research Associate at University of Basilicata (UNIBAS))
 - Aurelia Sole (Professor at University of Basilicata (UNIBAS)
 - [Salvatore Manfreda]  (http://www2.unibas.it/manfreda/HydroLab/home.html) (Associate Professor of University of Basilicata, Head of HydroLAB, Co-Founder of [Wat-TUBE] (http://wat-tube.it/index.php/it/) spin-off UNIBAS)
 
+<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/HydroLAB.PNG" alt="icon.png" width="300" height="100" /></p>
 
 ## Project Details
 Learn more about the **GFA** project: scope, background and licensing.
