@@ -31,10 +31,10 @@ changelog=Added compatibility to QGIS 2
 # tags are comma separated with spaces allowed
 tags=
 
-homepage=https://github.com/hydrolab/GeomorphicFloodArea.git
-tracker=https://github.com/hydrolab/GeomorphicFloodArea/issues
-repository=https://github.com/hydrolab/GeomorphicFloodArea.git
-# ExampleDataset=https://github.com/hydrolab/GeomorphicFloodArea-doc
+homepage=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area.git
+tracker=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/issues
+repository=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area
+# ExampleDataset=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area-doc
 icon=icona.png
 # experimental flag
 experimental=False
