@@ -1,0 +1,94 @@
+<HTML>
+<head>
+<img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/icon.png" alt="icon.png" width="100" height="100" />
+<a href="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area" target="GFA - tool">
+	<title>Geomorphic Flood Area (GFA)</title>
+	<meta name="author" content="Raffaele Albano">
+	<meta http-equiv="content-type" content="text/html; charset=UTF8">
+	<meta http-equiv="Content-Script-Type" content="text/javascript">
+	<meta http-equiv="Content-Style-Type" content="text/css">
+	<link REL="STYLESHEET" TYPE="text/css" HREF="indexSTL.css">
+</head>
+
+<BODY>
+
+<h2>Geomorphic Flood Area (GFA)</h2>
+
+
+<P>
+
+
+
+<P>
+<ul>
+	<a id="GeomorphicFloodArea">GFA - tool </a> is an open-source software to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI) (Samela et al., 2017).</li>
+	    <ul>
+</P>
+<P>
+		<li>Input:</li>
+		<ul>
+			    <li>DEM: Digital Elevation Model grid</li>
+			    <li>Filled DEM: Depressionless DEM grid</li>
+                <li>Flow Direction D8: eight direction flow model grid</li>
+                <li>Flow Accumulation: Flow accumulation grid
+		
+		</ul>	    
+        
+		<li>Set methodology options:</li>
+        <ul>  
+                <li>FlowDir coding: Flow direction grid encoding (according to ESRI (1-128), or to HyGrid2k2 (0-315) or to TauDEM (1-8))</li>
+                <li>Drainage network identification method:</li>
+                
+                (i) ASk method: (Giannoni et al., 2005) the channel starts from location where the quantity AS^k (A=contributing area, S=local slope, k=drainage basin related exponent) is higher than a specific threshold;
+                
+                (ii) FAt method: (Tarboton et al., 1991) the channel starts from location where the flow accumulation is higher than a specific threshold
+                     </li>
+                <li>Drainage network identification threshold: threshold value to identify channel network
+		
+		</ul>
+		
+        <li>Set calibration options:</li>
+        <ul>
+		<li>Manually set threshold: set manually the threshold of GFI to distinguish flood prone areas and areas not prone to floods</li>
+				<li>GFI classifier threshold: set the value of the GFI threshold</li>   
+        <li>Calibrate Threshold: automatic calibration of the GFI threshold (ROC curve method). A standard flood hazard map derived by hydraulic models, must be selected as the “gold standard truth” and used to train a linear binary classifier based on the GFI. This calibration map is necessary for limited portions of the basin of interest (at least 2% of drainage basin) </li>
+                </ul>
+		
+		
+        <li>Output:</li>
+		<ul>
+			    <li> GFI raster: the Geomorphic Flood Index map (Samela et al., 2017)</li>
+                            <li> GFI normalized raster: the Geomorphic Flood Index map, with values normalized in the range -1:1</li>
+                <li> GFI derived flood-prone areas map: the binary raster of the flood prone areas identified by the GFI classifier</li>
+				<li> GFI performance metrics: a text file which stores the calibration threshold, the false positive rate, the false negative rate, the area under the ROC curve</li>
+				<li> Create intermediate files: locally store all the main intermediate file utilized to produce the above results</li>
+		</ul>
+</P>		
+<P>		
+		<li>References:</li>
+		<ul>	
+				<li>Giannoni, F., Roth, & G., Rudari, R., (2005). A procedure for drainage network identification from geomorphology and its application to the prediction of the hydrologic response. Advances in Water Resources, 28(6), 567-581.
+				<li>Tarboton D. G., R. L. Bras, I. Rodriguez–Iturbe. 1991. On the Extraction of Channel Networks from Digital Elevation Data. Hydrological Processes. 5: 81–100.
+				<li>Samela, C., Troy, T.J., & Manfreda, S. (2017). Geomorphic classifiers for flood-prone areas delineation for data-scarce environments, Advances in Water Resources 102: 13-28</li>
+                                <li>Samela, C., Albano, R., Sole, A., Manfreda, S. (2017). Geomorphic Flood Area (GFA): a QGIS tool for a cost-effective delineation of the flood-prone areas, (submitted)</li>
+	 
+	    </ul>
+		
+
+</P>	
+</ul>	
+Author:  <a href="http://www2.unibas.it/raffaelealbano/">Raffaele Albano</a>, Caterina Samela, <a href="http://www2.unibas.it/manfreda/HydroLab/home.html">Salvatore Manfreda</a>, Aurelia Sole
+</ul>
+HydroLab - University of Basilicata (UNIBAS), Italy
+
+				
+
+	<br>
+
+</ul>
+
+</P>
+<img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/HydroLAB.png" alt="HydroLAB.png" width="100" height="50" />
+
+</BODY>
+</HTML>
