@@ -7,7 +7,6 @@
 
 **GFA - tool** is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI), (Manfreda et al., 2015; Samela et al., 2016; Samela et al., 2017a)
 
-[I'm an inline-style link](https://www.google.com)
 
 ## Table of Contents
 
@@ -29,7 +28,10 @@
 * [**Bug Report**](#bug-report)
 
 ## Team - HydroLAB
-- [Raffaele Albano] (http://www2.unibas.it/raffaelealbano/) (Co-Founder of [Wat-TUBE] (http://wat-tube.it/index.php/it/) spin-off UNIBAS, Research Associate at University of Basilicata (UNIBAS))
+
+[I'm an inline-style link](https://www.google.com)
+
+[Raffaele Albano] (http://www2.unibas.it/raffaelealbano/) (Co-Founder of [Wat-TUBE] (http://wat-tube.it/index.php/it/) spin-off UNIBAS, Research Associate at University of Basilicata (UNIBAS))
 - [Samela Caterina] (hhttp://www2.unibas.it/manfreda/HydroLab/home.html) (Research Associate at University of Basilicata (UNIBAS))
 - Aurelia Sole (Professor at University of Basilicata (UNIBAS)
 - [Salvatore Manfreda]  (http://www2.unibas.it/manfreda/HydroLab/home.html) (Associate Professor of University of Basilicata, Head of HydroLAB, Co-Founder of [Wat-TUBE] (http://wat-tube.it/index.php/it/) spin-off UNIBAS)
