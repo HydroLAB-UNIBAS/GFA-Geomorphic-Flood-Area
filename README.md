@@ -3,9 +3,9 @@
 
 ### Geomorphic Flood Area
 ----------
-<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/icona.png"/></p>
+<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/icona.png"   width="100" height="100" //></p>
 
-**GFA - tool** is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI), (Manfreda et al., 2015; Samela et al., 2017a)
+**GFA - tool** is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI), (Manfreda et al., 2015; Samela et al., 2016; Samela et al., 2017a)
 
 ## Table of Contents
 
@@ -31,7 +31,7 @@
 - [Samela Caterina] (hhttp://www2.unibas.it/manfreda/HydroLab/home.html) (Research Associate at University of Basilicata (UNIBAS))
 - [Aurelia Sole] (http://ingegneria.unibas.it/site/home/ricerca/infrastrutture-di-ricerca/laboratori/articolo2135.html) (Professor at University of Basilicata (UNIBAS)
 - [Salvatore Manfreda] (http://www2.unibas.it/manfreda/HydroLab/home.html) (Professor at University of Basilicata (UNIBAS), Head of HydroLAB, Co-Founder of Wat-TUBE spin-off UNIBAS)
-<p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/HydroLAB.PNG"/></p>
+<p align="center"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/HydroLAB.PNG" alt="icon.png" width="300" height="100" /></p>
 
 
 ## Project Details
