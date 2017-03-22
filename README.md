@@ -53,7 +53,7 @@ This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS
 
 ### Metadata
 | Metadata Title | Description |
-|:--------------------:|:--------------------------------: |:---------------------------------: |
+|--------------------|-------------------------------- |---------------------------------|
 
 | Metadata Title	| Description 	|
 |:--------------------:	|:-------------------------------:	|:--------------------------------:	|
@@ -66,7 +66,7 @@ This project is completely licensed [GPL v2+](https://github.com/HydroLAB-UNIBAS
 
 ## GFA Installation Instruction
 **GFA - tool** can be installed in [QGIS](https://qgis.org) using the Plugin Manager (see [here](http://docs.qgis.org/2.8/en/docs/user_manual/plugins/plugins.html#managing-plugins)). The plugin was tested on the 2.14 ltr release of QGIS. It uses the python library of QGIS core. 
-However, if the sklean library of [scikit-learn](http://scikit-learn.org) is not provided in your release of QGIS, you can use [pip.py] (https://pypi.python.org/pypi/pip) .
+However, if the sklean library of [scikit-learn](http://scikit-learn.org) is not provided in your release of QGIS, you can use [pip.py](https://pypi.python.org/pypi/pip).
 
 On Windows:
 
@@ -109,6 +109,6 @@ A set of sample data to test the plugin is provided
 - **Samela, C., Albano, R., Sole, A., Manfreda, S. (2017b). Geomorphic Flood Area (GFA): a QGIS tool for a cost-effective delineation of the flood-prone areas, (submitted)**
 
 ## Bug Report
-The best place to file bug reports is at the [Bug Tracker] (https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic Flood Area/issues), this requires a free [GitHub](https://github.com/) account.
+The best place to file bug reports is at the [Bug Tracker](https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/issues), this requires a free [GitHub](https://github.com/) account.
 
 Please ensure that bug reports clearly describe the bug and if possible provide a simple script that can reproduce the problem. If in doubt contact [Raffaele Albano](http://www2.unibas.it/raffaelealbano/?page_id=115).
