@@ -738,8 +738,9 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             matrix_min=numpy.min(ln_hronH[idnan==False])
             matrix_max=numpy.max(ln_hronH[idnan==False])
             ln_hronH_norm= 2*( (ln_hronH-matrix_min)/(matrix_max-matrix_min)-0.5)
-
-
+            id_hronH_norm_nan=numpy.where(numpy.isnan(ln_hronH_norm))
+            nnan=len(id_hronH_norm_nan[0])
+            self.textEdit.append( str(nnan) )
             if calibration==1:
                 self.textEdit.append( 'Loading calibration files' )
                 band_floodhazard=ds_floodhazard.GetRasterBand(1)
@@ -801,6 +802,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 Marginal_hazard[ Marginal_hazard==3]=1
 
                 CalibrationArea=Marginal_hazard
+                CalibrationArea[numpy.isnan(ln_hronH_norm)]=0
                 if debug==1:
                     numpy.savetxt(' CalibrationArea_python.txt', CalibrationArea)
 
@@ -821,13 +823,18 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 ### calculate the roc curve
                 fpr, tpr, thresholds = metrics.roc_curve(floodhazard_1d, ln_hronH_norm_1d)
                 roc_auc = metrics.auc(fpr, tpr)
+                n_th=len(thresholds)
+                
                 ## optimal threshold
                 F=fpr+(1-tpr)
                 t_ln_hronH=thresholds[F.argmin()]
+                step_th=t_ln_hronH-thresholds[F.argmin()-1]
                 endtime_calib=time.time()
                 self.textEdit.append('calibration completed in ' + str(endtime_calib-starttime_calib))
                 self.textEdit.append('area under roc: ' +str(roc_auc))
                 self.textEdit.append('optimal threshold: ' +str(t_ln_hronH))
+                self.textEdit.append('n threshold: ' +str(n_th))
+                self.textEdit.append('step threshold: ' +str(step_th))
                 file_output_txt=file_output[0:len(file_output)-4]+'.txt'
                 tmp=numpy.zeros((6,1));
                 tmp[0,0]=t_ln_hronH
@@ -901,8 +908,8 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 numpy.savetxt('hronH_python.txt',hronH)
                 numpy.savetxt('ln_hronH_python.txt',ln_hronH)
                 numpy.savetxt('ln_hronHbin_python.txt',ln_hronHbin)
-
-
+                numpy.savetxt('ln_hronH_norm_python.txt',ln_hronH_norm)
+                numpy.savetxt('ln_hronH_norm_1d_python.txt',ln_hronH_norm_1d)
             self.writeOutputGeoTiff(ln_hronH, geotransform,prj, rows, cols, file_output)
             file_outputbin=self.lineOutputBin.text()
             if len(file_outputbin)==0:
