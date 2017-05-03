@@ -29,6 +29,7 @@ from PyQt4.QtGui import QProgressBar
 import os, sys, time,  math
 from osgeo import gdal, ogr
 from osgeo.gdalconst import *
+from scipy import ndimage
 import osr
 import numpy
 from sklearn import metrics
@@ -98,6 +99,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
         self.checkBoxWD.setVisible ( False )
         self.btnOutputWD.setVisible ( False )
         self.lineOutputWD.setVisible ( False )
+        self.doubleSpinBoxN.setValue(0.354429752)
     def call_help(self):
        # qgis.utils.showPluginHelp()
        help_path = os.path.join(os.path.dirname(__file__), 'help', 'help.html')
@@ -136,7 +138,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def demconFile(self):
         "Display file dialog for output file"
-        demconName = QFileDialog.getOpenFileName(self, "FILL Dem input file",".", "ESRI ascii (*.txt)")
+        demconName = QFileDialog.getOpenFileName(self, "FILL Dem input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
         if len(demconName)>0:
                 self.cmbDemCon.insertItem (0, demconName)
                 self.cmbDemCon.setCurrentIndex(0)
@@ -144,7 +146,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def demvoidFile(self):
         "Display file dialog for output file"
-        demvoidName = QFileDialog.getOpenFileName(self, "Dem input file",".", "ESRI ascii (*.txt)")
+        demvoidName = QFileDialog.getOpenFileName(self, "Dem input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
         if len(demvoidName)>0:
                 self.cmbDemVoid.insertItem (0, demvoidName)
                 self.cmbDemVoid.setCurrentIndex(0)
@@ -152,7 +154,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def flowdirFile(self):
         "Display file dialog for output file"
-        flowdirName = QFileDialog.getOpenFileName(self, "Flowdir input file",".", "ESRI ascii (*.txt)")
+        flowdirName = QFileDialog.getOpenFileName(self, "Flowdir input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
         if len(flowdirName)>0:
                 self.cmbFlowDir.insertItem (0, flowdirName)
                 self.cmbFlowDir.setCurrentIndex(0)
@@ -160,7 +162,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def flowaccFile(self):
         "Display file dialog for output file"
-        flowaccName = QFileDialog.getOpenFileName(self, "Flowacc input file",".", "ESRI ascii (*.txt)")
+        flowaccName = QFileDialog.getOpenFileName(self, "Flowacc input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
         if len(flowaccName)>0:
                 self.cmbFlowAcc.insertItem (0, flowaccName)
                 self.cmbFlowAcc.setCurrentIndex(0)
@@ -168,7 +170,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def sfmFile(self):
         "Display file dialog for output file"
-        sfmName = QFileDialog.getOpenFileName(self, "Standard Flood Map calibration file",".", "ESRI ascii (*.txt)")
+        sfmName = QFileDialog.getOpenFileName(self, "Standard Flood Map calibration file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
         if len(sfmName)>0:
                 self.cmbSFM.insertItem (0, sfmName)
                 self.cmbSFM.setCurrentIndex(0)
@@ -603,7 +605,9 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
 
             band_demcon=ds_demcon.GetRasterBand(1)
+            inNoData=band_demcon.GetNoDataValue()
             demcon=band_demcon.ReadAsArray(0,0,cols,rows)
+            
 
             band_demvoid=ds_demvoid.GetRasterBand(1)
             demvoid=band_demvoid.ReadAsArray(0,0,cols,rows)
@@ -618,8 +622,8 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             G=band_G.ReadAsArray(0,0,cols,rows)
 
             G=numpy.deg2rad(G);# convert degree in radiant
-            nanvalue=-9999# nan  values
-
+            #nanvalue=-9999# nan  values
+            nanvalue=inNoData
             # convert to float
             demcon=demcon.astype(numpy.float32)# convert to float
             demvoid=demvoid.astype(numpy.float32)# convert to float
@@ -627,11 +631,11 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             flowacc=flowacc.astype(numpy.float32)# convert to float
             G=G.astype(numpy.float32)## convert to float
 
-            G[demcon==nanvalue]=numpy.nan# in G change demcon=-9999 with nan
-            demcon[demcon==nanvalue]=numpy.nan# change demcon=-9999 with nan
-            demvoid[demvoid==nanvalue]=numpy.nan#change demcon=-9999 with nan
-            flowdir[flowdir==nanvalue]=numpy.nan#change demcon=-9999 with nan
+            G[demcon==nanvalue]=numpy.nan# in G change demcon=-9999 with nan      
+            demvoid[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
+            flowdir[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
             flowacc[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
+            demcon[demcon==nanvalue]=numpy.nan# change demcon=-9999 with nan
 
             dem=numpy.copy(demcon)# new array as demcon
 
@@ -646,9 +650,11 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 channel=numpy.zeros( (rows,cols))#matrix of rows and cols dimension
 
                 tmp=flowacc*numpy.square(cellsize)*numpy.power( (G+0.0001), 1.7)# tmp= (FlowAcc.*cellsize^2.*(G+0.0001).^1.7<0.4*10^5)
-                c1=tmp<40000# true where matrix tmp è < 40000
-                c2=tmp>30000# true where matrix tmp è > 30000
-                channel[c1*c2 ]=1# impose channel=1 where c1 and c2 are true
+                #c1=tmp<40000# true where matrix tmp è < 40000
+                #c2=tmp>30000# true where matrix tmp è > 30000
+                c1=tmp>100000
+                #channel[c1*c2]=1# impose channel=1 where c1 and c2 are true
+                channel[c1]=1# impose channel=1 where c1  true
                 self.progressBar.setRange(1,rows-1)
                 #self.progressBar.show()
                 self.progressBar.activateWindow()
@@ -696,7 +702,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                         Ld=0
                         dm=0
                         sqrt2=numpy.sqrt(2)
-                        while MASK[x,y]==0 and channel[x,y]==0 and x< a-2 and x>0 and y<b-2 and y>0 and flowdir[x,y]>-9999:# il ciclo while finisce quando risalgo ad una cella con channel =1 oppure gia visitata (mask =1)
+                        while MASK[x,y]==0 and channel[x,y]==0 and x< a-2 and x>0 and y<b-2 and y>0 and   numpy.isnan(flowdir[x,y])==False :# il ciclo while finisce quando risalgo ad una cella con channel =1 oppure gia visitata (mask =1)
                             fd=flowdir[x,y]
                             x=x+di[fd]# set cell x,y on the basis of flowdir coding (user chosen)
                             y=y+dj[fd]
@@ -722,14 +728,14 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             #...h=aA^n
             self.textEdit.append( 'Ariver, H done' )
             #% Parameters estimated for the Ohio River basin:
-            a = 0.1035
+            #a = 0.1035
            # n = 0.4057 (defoult)
             n=self.doubleSpinBoxN.value()
             self.textEdit.append('n ' +str(n))
             #% hydraulic scaling relation (A[km^2])
             self.textEdit.append( 'Calculating GFI... ' )
-            hr = a*numpy.power((((Ariver+1)*cellsize*cellsize)/1000000.0),n);# hr = a.*(((Ariver+1).*cellsize^2)./10^6).^n;
-
+            #hr = a*numpy.power((((Ariver+1)*cellsize*cellsize)/1000000.0),n);# hr = a.*(((Ariver+1).*cellsize^2)./10^6).^n;
+            hr = numpy.power((((Ariver+1)*cellsize*cellsize)/1000000.0),n);
             #%% Index GFI=ln[hr/H]
             hronH=hr/H;  #hr./H;
             ln_hronH=numpy.real(numpy.log(hronH));#ln_hronH=real(log(hronH));
@@ -778,11 +784,12 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
 
                 # MARGINAL HAZARD
-                RischioAdB=numpy.zeros((rows,cols))
-                RischioAdB[(floodhazard100>0)*(floodhazard100<=1)]=1
-                if debug==1:
-                    numpy.savetxt('RischioAdB_python.txt',RischioAdB)
-                Marginal_hazard=numpy.zeros((rows,cols))
+                #RischioAdB=numpy.zeros((rows,cols))
+                #RischioAdB[(floodhazard100>0)*(floodhazard100<=1)]=1
+                #if debug==1:
+                #    numpy.savetxt('RischioAdB_python.txt',RischioAdB)
+                #Marginal_hazard=numpy.zeros((rows,cols))
+                Marginal_hazard=numpy.copy(channel)
                 for ctr in range(1,rows-2):
                     #print ctr
                     for ctc in range(1,cols-2):
@@ -857,6 +864,25 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
             ln_hronHbin=numpy.zeros((rows,cols))
             ln_hronHbin[ln_hronH_norm>t_ln_hronH]=1;
+            ln_hronHbin[numpy.isnan(demcon)]=0;
+            # ripulitura pixel isolati
+            
+            s = [[1,1,1],[1,1,1],[1,1,1]]
+            label_im, nb_labels = ndimage.label(ln_hronHbin, structure=s)
+            
+            sizes = ndimage.sum(ln_hronHbin, label_im, range(nb_labels + 1))
+            
+            id_ok=numpy.where(sizes>=8)[0]
+            n_ok=len(id_ok)
+            ln_hronHbin=numpy.zeros((rows,cols))
+            for ct_ok in range(0,n_ok):
+                    print ct_ok
+                    ct_label=id_ok[ct_ok]
+                    print ct_label
+                    ln_hronHbin[label_im==ct_label] = 1
+
+           
+            
             self.textEdit.append( 'GFI done' )
 
             if self.checkBoxWD. isChecked():
