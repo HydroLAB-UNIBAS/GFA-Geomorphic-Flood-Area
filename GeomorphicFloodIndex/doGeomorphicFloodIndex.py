@@ -138,7 +138,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def demconFile(self):
         "Display file dialog for output file"
-        demconName = QFileDialog.getOpenFileName(self, "FILL Dem input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
+        demconName = QFileDialog.getOpenFileName(self, "FILL Dem input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(demconName)>0:
                 self.cmbDemCon.insertItem (0, demconName)
                 self.cmbDemCon.setCurrentIndex(0)
@@ -146,7 +146,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def demvoidFile(self):
         "Display file dialog for output file"
-        demvoidName = QFileDialog.getOpenFileName(self, "Dem input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
+        demvoidName = QFileDialog.getOpenFileName(self, "Dem input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(demvoidName)>0:
                 self.cmbDemVoid.insertItem (0, demvoidName)
                 self.cmbDemVoid.setCurrentIndex(0)
@@ -154,7 +154,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def flowdirFile(self):
         "Display file dialog for output file"
-        flowdirName = QFileDialog.getOpenFileName(self, "Flowdir input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
+        flowdirName = QFileDialog.getOpenFileName(self, "Flowdir input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(flowdirName)>0:
                 self.cmbFlowDir.insertItem (0, flowdirName)
                 self.cmbFlowDir.setCurrentIndex(0)
@@ -162,7 +162,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def flowaccFile(self):
         "Display file dialog for output file"
-        flowaccName = QFileDialog.getOpenFileName(self, "Flowacc input file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
+        flowaccName = QFileDialog.getOpenFileName(self, "Flowacc input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(flowaccName)>0:
                 self.cmbFlowAcc.insertItem (0, flowaccName)
                 self.cmbFlowAcc.setCurrentIndex(0)
@@ -170,7 +170,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
     def sfmFile(self):
         "Display file dialog for output file"
-        sfmName = QFileDialog.getOpenFileName(self, "Standard Flood Map calibration file",".", "GeoTiff (*.tif);;ESRI ascii (*.txt);;All files (*.*)")
+        sfmName = QFileDialog.getOpenFileName(self, "Standard Flood Map calibration file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(sfmName)>0:
                 self.cmbSFM.insertItem (0, sfmName)
                 self.cmbSFM.setCurrentIndex(0)
@@ -751,8 +751,10 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 self.textEdit.append( 'Loading calibration files' )
                 band_floodhazard=ds_floodhazard.GetRasterBand(1)
                 floodhazard100=band_floodhazard.ReadAsArray(0,0,cols,rows)
+                inNoData_floodhazard=band_floodhazard.GetNoDataValue()
+                floodhazard100[inNoData_floodhazard]=-9999
 
-
+				
                 self.textEdit.append( 'Starting calibration' )
                 starttime_calib=time.time()
 
