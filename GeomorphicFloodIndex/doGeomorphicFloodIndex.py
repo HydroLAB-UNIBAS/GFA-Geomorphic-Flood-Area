@@ -751,8 +751,9 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 self.textEdit.append( 'Loading calibration files' )
                 band_floodhazard=ds_floodhazard.GetRasterBand(1)
                 floodhazard100=band_floodhazard.ReadAsArray(0,0,cols,rows)
-                inNoData_floodhazard=band_floodhazard.GetNoDataValue()
-                floodhazard100[inNoData_floodhazard]=-9999
+				inNoData_floodhazard=band_floodhazard.GetNoDataValue()
+				id_nan_floodhazard=numpy.where(floodhazard100==inNoData_floodhazard)
+				floodhazard100[id_nan_floodhazard]=-9999
 
 				
                 self.textEdit.append( 'Starting calibration' )
