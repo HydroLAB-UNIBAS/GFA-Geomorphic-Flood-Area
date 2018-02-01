@@ -607,7 +607,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             band_demcon=ds_demcon.GetRasterBand(1)
             inNoData=band_demcon.GetNoDataValue()
             demcon=band_demcon.ReadAsArray(0,0,cols,rows)
-            
+
 
             band_demvoid=ds_demvoid.GetRasterBand(1)
             demvoid=band_demvoid.ReadAsArray(0,0,cols,rows)
@@ -631,7 +631,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             flowacc=flowacc.astype(numpy.float32)# convert to float
             G=G.astype(numpy.float32)## convert to float
 
-            G[demcon==nanvalue]=numpy.nan# in G change demcon=-9999 with nan      
+            G[demcon==nanvalue]=numpy.nan# in G change demcon=-9999 with nan
             demvoid[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
             flowdir[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
             flowacc[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
@@ -751,11 +751,11 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 self.textEdit.append( 'Loading calibration files' )
                 band_floodhazard=ds_floodhazard.GetRasterBand(1)
                 floodhazard100=band_floodhazard.ReadAsArray(0,0,cols,rows)
-				inNoData_floodhazard=band_floodhazard.GetNoDataValue()
-				id_nan_floodhazard=numpy.where(floodhazard100==inNoData_floodhazard)
-				floodhazard100[id_nan_floodhazard]=-9999
+                inNoData_floodhazard=band_floodhazard.GetNoDataValue()
+                id_nan_floodhazard=numpy.where(floodhazard100==inNoData_floodhazard)
+                floodhazard100[id_nan_floodhazard]=-9999
 
-				
+
                 self.textEdit.append( 'Starting calibration' )
                 starttime_calib=time.time()
 
@@ -834,7 +834,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 fpr, tpr, thresholds = metrics.roc_curve(floodhazard_1d, ln_hronH_norm_1d)
                 roc_auc = metrics.auc(fpr, tpr)
                 n_th=len(thresholds)
-                
+
                 ## optimal threshold
                 F=fpr+(1-tpr)
                 t_ln_hronH=thresholds[F.argmin()]
@@ -869,12 +869,12 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             ln_hronHbin[ln_hronH_norm>t_ln_hronH]=1;
             ln_hronHbin[numpy.isnan(demcon)]=0;
             # ripulitura pixel isolati
-            
+
             s = [[1,1,1],[1,1,1],[1,1,1]]
             label_im, nb_labels = ndimage.label(ln_hronHbin, structure=s)
-            
+
             sizes = ndimage.sum(ln_hronHbin, label_im, range(nb_labels + 1))
-            
+
             id_ok=numpy.where(sizes>=8)[0]
             n_ok=len(id_ok)
             ln_hronHbin=numpy.zeros((rows,cols))
@@ -884,8 +884,8 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                     print ct_label
                     ln_hronHbin[label_im==ct_label] = 1
 
-           
-            
+
+
             self.textEdit.append( 'GFI done' )
 
             if self.checkBoxWD. isChecked():
