@@ -708,8 +708,8 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                             y=y+dj[fd]
 
                         if  MASK[x,y]==1: # if cell was visited
-                               Ariver[ctr,ctc]=flowacc[X[x,y],Y[x,y]]# use X[x,y],Y[x,y]
-                               H[ctr,ctc]=dem[ctr,ctc]-dem[X[x,y],Y[x,y]]
+                               Ariver[ctr,ctc]=flowacc[int(X[x,y]),int(Y[x,y])]# use X[x,y],Y[x,y]
+                               H[ctr,ctc]=dem[ctr,ctc]-dem[int(X[x,y]),int(Y[x,y])]
                                MASK[ctr,ctc]=1# # if cell was visited, MASK = 1
                                X[ctr,ctc]=X[x,y]# value of x and y on the new cell
                                Y[ctr,ctc]=Y[x,y]
