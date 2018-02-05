@@ -5,7 +5,7 @@ GeomorphicFloodArea
 A QGIS plugin
 GFA
  -------------------
-version                : 1.0
+version                : 2.0
 author                 : Raffaele Albano
 contact                : http://www2.unibas.it/raffaelealbano/?page_id=115
 ***************************************************************************/
