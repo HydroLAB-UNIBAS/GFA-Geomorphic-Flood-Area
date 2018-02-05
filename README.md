@@ -34,7 +34,7 @@
 
 - [Raffaele Albano](http://www2.unibas.it/raffaelealbano) (Co-Founder of [Wat-TUBE](http://wat-tube.it) spin-off UNIBAS, Research Associate at University of Basilicata (UNIBAS))
 - Samela Caterina (Research Associate at University of Basilicata (UNIBAS))
-- [Aurelia Sole] (http://ingegneria.unibas.it/site/home/ricerca/infrastrutture-di-ricerca/laboratori/articolo2135.html) (Professor at University of Basilicata  (UNIBAS))
+- Aurelia Sole (Professor at University of Basilicata  (UNIBAS))
 - [Salvatore Manfreda](http://www2.unibas.it/manfreda/HydroLab) (Professor at University of Basilicata, Head of HydroLAB, Co-Founder of [Wat-TUBE](http://wat-tube.it) spin-off UNIBAS)
 
 <p align="left"><img src="https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/blob/master/GeomorphicFloodIndex/HydroLAB.PNG" width="300" height="100" /></p>
