@@ -32,7 +32,7 @@ from osgeo.gdalconst import *
 from scipy import ndimage
 import osr
 import numpy
-from sklearn import metrics
+#from sklearn import metrics
 import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings("ignore")
@@ -43,6 +43,8 @@ import subprocess
 import platform
 import tempfile
 import shutil
+
+
 
 class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
 
@@ -100,6 +102,36 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
         self.btnOutputWD.setVisible ( False )
         self.lineOutputWD.setVisible ( False )
         self.doubleSpinBoxN.setValue(0.354429752)
+
+    def my_roc_curve(self,floodhazard_1d, ln_hronH_norm_1d,passo):
+
+        thresholds=numpy.linspace(1,-1 ,2/passo)
+        nth=len(thresholds)
+        fpr=numpy.zeros((1,nth)).flatten()
+        tpr=numpy.zeros((1,nth)).flatten()
+        self.progressBar.setRange(1,nth)
+        for i in range(nth):
+            self.progressBar.setValue(i)
+            t=thresholds[i]
+            tp_t=numpy.logical_and(ln_hronH_norm_1d>t,floodhazard_1d>0).sum()
+            tn_t=numpy.logical_and(ln_hronH_norm_1d<=t,floodhazard_1d==0).sum()
+            fp_t=numpy.logical_and(ln_hronH_norm_1d>t,floodhazard_1d==0).sum()
+            fn_t=numpy.logical_and(ln_hronH_norm_1d<=t,floodhazard_1d>0).sum()
+
+            fpr[i]=fp_t/float(fp_t+tn_t)
+            tpr[i]=tp_t/float(tp_t+fn_t)
+
+        return fpr,tpr,thresholds
+
+    def my_auc(self,fpr,tpr):
+        auc=0
+        n=len(fpr)
+        for i in range(n-1):
+            auc+=(fpr[i+1]-fpr[i])*( tpr[i+1]+tpr[i] )
+
+        auc*=0.5
+        return auc
+
     def call_help(self):
        # qgis.utils.showPluginHelp()
        help_path = os.path.join(os.path.dirname(__file__), 'help', 'help.html')
@@ -407,9 +439,9 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
         yOrigin = transform[3]
         pixelWidth = transform[1]
         pixelHeight = transform[5]
+####################################################
 
-
-
+###################################################
     def accept(self):
         # Called when "OK" button pressed
         file_demcon=self.cmbDemCon.currentText()
@@ -607,7 +639,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             band_demcon=ds_demcon.GetRasterBand(1)
             inNoData=band_demcon.GetNoDataValue()
             demcon=band_demcon.ReadAsArray(0,0,cols,rows)
-
+            
 
             band_demvoid=ds_demvoid.GetRasterBand(1)
             demvoid=band_demvoid.ReadAsArray(0,0,cols,rows)
@@ -631,7 +663,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             flowacc=flowacc.astype(numpy.float32)# convert to float
             G=G.astype(numpy.float32)## convert to float
 
-            G[demcon==nanvalue]=numpy.nan# in G change demcon=-9999 with nan
+            G[demcon==nanvalue]=numpy.nan# in G change demcon=-9999 with nan      
             demvoid[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
             flowdir[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
             flowacc[demcon==nanvalue]=numpy.nan#change demcon=-9999 with nan
@@ -755,7 +787,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 id_nan_floodhazard=numpy.where(floodhazard100==inNoData_floodhazard)
                 floodhazard100[id_nan_floodhazard]=-9999
 
-
+				
                 self.textEdit.append( 'Starting calibration' )
                 starttime_calib=time.time()
 
@@ -807,20 +839,23 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 Marginal_hazard[ctr+1,:]=0;
                 Marginal_hazard[:,ctc+1]=0;
                 if debug==1:
-                    numpy.savetxt(' Marginal_hazard_python.txt', Marginal_hazard)
+                    file_output_int=file_output[0:len(file_output)-4]+'_Marginal_hazard_python.txt'
+                    numpy.savetxt(file_output_int, Marginal_hazard)
                 Marginal_hazard[ Marginal_hazard!=3]=0
                 Marginal_hazard[ Marginal_hazard==3]=1
 
                 CalibrationArea=Marginal_hazard
                 CalibrationArea[numpy.isnan(ln_hronH_norm)]=0
                 if debug==1:
-                    numpy.savetxt(' CalibrationArea_python.txt', CalibrationArea)
+                    file_output_int=file_output[0:len(file_output)-4]+'_CalibrationArea_python.txt'
+                    numpy.savetxt(file_output_int, CalibrationArea)
 
                 floodhazard=numpy.zeros((rows,cols));
                 floodhazard[ (floodhazard100>0) ]=1;
 
                 if debug==1:
-                    numpy.savetxt(' floodhazard_python.txt', floodhazard)
+                    file_output_int=file_output[0:len(file_output)-4]+'_floodhazard_python.txt'
+                    numpy.savetxt(file_output_int, floodhazard)
                 ### make 1d vectors
                 CalibrationArea_1d=CalibrationArea.flatten()
                 floodhazard_1d=floodhazard.flatten()
@@ -831,10 +866,13 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 ln_hronH_norm_1d=ln_hronH_norm_1d[CalibrationArea_1d==1]
 
                 ### calculate the roc curve
-                fpr, tpr, thresholds = metrics.roc_curve(floodhazard_1d, ln_hronH_norm_1d)
-                roc_auc = metrics.auc(fpr, tpr)
+               # fpr, tpr, thresholds = metrics.roc_curve(floodhazard_1d, ln_hronH_norm_1d)
+                fpr, tpr, thresholds =self.my_roc_curve(floodhazard_1d, ln_hronH_norm_1d,0.001)
+             
+                #roc_auc = metrics.auc(fpr, tpr)
+                roc_auc=self.my_auc(fpr,tpr)
                 n_th=len(thresholds)
-
+                
                 ## optimal threshold
                 F=fpr+(1-tpr)
                 t_ln_hronH=thresholds[F.argmin()]
@@ -842,10 +880,11 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 endtime_calib=time.time()
                 self.textEdit.append('calibration completed in ' + str(endtime_calib-starttime_calib))
                 self.textEdit.append('area under roc: ' +str(roc_auc))
+                
                 self.textEdit.append('optimal threshold: ' +str(t_ln_hronH))
                 self.textEdit.append('n threshold: ' +str(n_th))
                 self.textEdit.append('step threshold: ' +str(step_th))
-                file_output_txt=file_output[0:len(file_output)-4]+'.txt'
+                file_output_txt=file_output[0:len(file_output)-4]+'_performance.txt'
                 tmp=numpy.zeros((6,1));
                 tmp[0,0]=t_ln_hronH
                 tmp[1,0]=fpr[F.argmin()]
@@ -858,7 +897,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                 p_calibration=numpy.double(n_calibration)/numpy.double(n_tot)
                 tmp[5,0]=p_calibration*100
 
-                string_out='Threshold= '+ str(tmp[0,0])+'\nRfp= '+str(tmp[1,0])+'\nRtp= '+str(tmp[2,0])+'\nobject function='+str(tmp[3,0])+'\nauc='+str(tmp[4,0])+'\ncalibretion area='+str(tmp[5,0])
+                string_out='Threshold= '+ str(tmp[0,0])+'\nRfp= '+str(tmp[1,0])+'\nRtp= '+str(tmp[2,0])+'\nobject function='+str(tmp[3,0])+'\nauc='+str(tmp[4,0])+'\ncalibration area='+str(tmp[5,0])
                 text_file = open(file_output_txt, "w")
                 text_file.write(string_out)
                 text_file.close()
@@ -869,12 +908,12 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             ln_hronHbin[ln_hronH_norm>t_ln_hronH]=1;
             ln_hronHbin[numpy.isnan(demcon)]=0;
             # ripulitura pixel isolati
-
+            
             s = [[1,1,1],[1,1,1],[1,1,1]]
             label_im, nb_labels = ndimage.label(ln_hronHbin, structure=s)
-
+            
             sizes = ndimage.sum(ln_hronHbin, label_im, range(nb_labels + 1))
-
+            
             id_ok=numpy.where(sizes>=8)[0]
             n_ok=len(id_ok)
             ln_hronHbin=numpy.zeros((rows,cols))
@@ -884,8 +923,8 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                     print ct_label
                     ln_hronHbin[label_im==ct_label] = 1
 
-
-
+           
+            
             self.textEdit.append( 'GFI done' )
 
             if self.checkBoxWD. isChecked():
@@ -927,18 +966,21 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
                                 if channel[x,y]>0:
                                        GFIwd[ctr,ctc]= GFIwd[x,y]-H[ctr,ctc]
                  if debug ==1:
-                     numpy.savetxt('GFIwd_python.txt',GFIwd)
+                     file_output_int=file_output[0:len(file_output)-4]+'_GFIwd_python.txt'
+                     numpy.savetxt(file_output_int,GFIwd)
             if debug ==1:
-                numpy.savetxt('G_python.txt',G)
-                numpy.savetxt('Ariver_python.txt',Ariver)
-                numpy.savetxt('H_python.txt',H)
-                numpy.savetxt('channel_python.txt',channel)
-                numpy.savetxt('hr_python.txt',hr)
-                numpy.savetxt('hronH_python.txt',hronH)
-                numpy.savetxt('ln_hronH_python.txt',ln_hronH)
-                numpy.savetxt('ln_hronHbin_python.txt',ln_hronHbin)
-                numpy.savetxt('ln_hronH_norm_python.txt',ln_hronH_norm)
-                numpy.savetxt('ln_hronH_norm_1d_python.txt',ln_hronH_norm_1d)
+                file_output_int_base=file_output[0:len(file_output)-4]
+                numpy.savetxt(file_output_int_base+'_G_python.txt',G)
+                self.writeOutputGeoTiff(G, geotransform,prj, rows, cols, file_output_int_base+'_G_python.tif')
+                numpy.savetxt(file_output_int_base+'_Ariver_python.txt',Ariver)
+                numpy.savetxt(file_output_int_base+'_H_python.txt',H)
+                numpy.savetxt(file_output_int_base+'_channel_python.txt',channel)
+                numpy.savetxt(file_output_int_base+'_hr_python.txt',hr)
+                numpy.savetxt(file_output_int_base+'_hronH_python.txt',hronH)
+                numpy.savetxt(file_output_int_base+'_ln_hronH_python.txt',ln_hronH)
+                numpy.savetxt(file_output_int_base+'_ln_hronHbin_python.txt',ln_hronHbin)
+                numpy.savetxt(file_output_int_base+'_ln_hronH_norm_python.txt',ln_hronH_norm)
+                numpy.savetxt(file_output_int_base+'_ln_hronH_norm_1d_python.txt',ln_hronH_norm_1d)
             self.writeOutputGeoTiff(ln_hronH, geotransform,prj, rows, cols, file_output)
             file_outputbin=self.lineOutputBin.text()
             if len(file_outputbin)==0:
