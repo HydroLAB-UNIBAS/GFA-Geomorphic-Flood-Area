@@ -48,7 +48,7 @@ Generally, more is sophisticated the flood inundation model and higher is the ac
 However, we pay this accuracy with a price: they are expensive and time consuming; moreover, they require an extensive input dataset not readily available for all areas. The scarcity of adequate data for flood hazard studies is generally most pronounced in developing counties. This gap has stimulated a lot of research in this area to overcome these limitations and several researchers have recently shown that the delineation of flood-prone areas can be carried out using simplified methods that rely on the analysis of the basin morphology (Manfreda et al., 2011; Mafreda et al., 2014; Mafreda et al., 2015; Samela et al., 2016; Samela et al., 2017a). These methods are based on the following assumption: in a drainage basin, a mutual causal relationship exists between flooding and the shape and extension of floodplains.
 
 ### Background
-Samela et al. (2017b) proposed a practical and cost-effective procedure for the preliminarily delineation of the flood-prone areas in data poor environments and for large-scale analyses based on information easily available worldwide.  The potentials of a geomorphic classifier, based on the recently proposed Geomorphic Flood Index, have been implemented in the open-source geographic information system Quantum GIS in the form of a new plugin named Geomorphic Flood Area – tool (GFA – tool) designed to create a user-friendly interface for the detection of the food-prone areas. Moreover, the tool allows also to generate a number of complementary information, such as the GFI, that may be used as ancillary data for remote sensing detection of inundated areas. 
+Samela et al. (2018) proposed a practical and cost-effective procedure for the preliminarily delineation of the flood-prone areas in data poor environments and for large-scale analyses based on information easily available worldwide.  The potentials of a geomorphic classifier, based on the recently proposed Geomorphic Flood Index, have been implemented in the open-source geographic information system Quantum GIS in the form of a new plugin named Geomorphic Flood Area – tool (GFA – tool) designed to create a user-friendly interface for the detection of the food-prone areas. Moreover, the tool allows also to generate a number of complementary information, such as the GFI, that may be used as ancillary data for remote sensing detection of inundated areas. 
 
 
 ### License
@@ -81,7 +81,7 @@ A set of sample data to test the plugin is provided
 [here](https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area-doc).
 
 ### Output data
-- GFI raster: the Geomorphic Flood Index map (Samela et al., 2017)
+- GFI raster: the Geomorphic Flood Index map (Samela et al., 2017a)
 - GFI normalized raster: the Geomorphic Flood Index map, with values normalized in the range -1:1
 - GFI derived flood-prone areas map: the binary raster of the flood prone areas identified by the GFI classifier
 - GFI performance metrics: a text file which stores the calibration threshold, the false positive rate, the false negative rate, the area under the ROC curve
@@ -96,7 +96,7 @@ A set of sample data to test the plugin is provided
 - Manfreda, S., Samela, C., Gioia, A., Consoli, G., Iacobellis, V.,  Giuzio, L., Cantisani, A., Sole, A., (2015). Flood-Prone Areas Assessment Using Linear Binary Classifiers based on flood maps obtained from 1D and 2D hydraulic models,  Natural Hazards, 79 (2), 735-754.
 - Samela, C., Manfreda, S., De Paola, F., Giugni, M., Sole, A., Fiorentino, M., (2016). DEM-based approaches for the delineation of flood prone areas in an ungauged basin in Africa,  Journal of Hydrologic Engineering, 21(2).
 - Samela, C., Troy, T.J., Manfreda, S., (2017a). Geomorphic classifiers for flood-prone areas delineation for data-scarce environments, Advances in Water Resources, 102: 13-28 
-- **Samela, C., Albano, R., Sole, A., Manfreda, S. (2017b). Geomorphic Flood Area (GFA): a QGIS tool for a cost-effective delineation of the flood-prone areas, Computers, Environment and Urban Systems, (doi: 10.1016/j.compenvurbsys.2018.01.013), 2018**
+- **Samela, C., Albano, R., Sole, A., Manfreda, S. (2018). Geomorphic Flood Area (GFA): a QGIS tool for a cost-effective delineation of the flood-prone areas, Computers, Environment and Urban Systems, (doi: 10.1016/j.compenvurbsys.2018.01.013)**
 
 ## Bug Report
 The best place to file bug reports is at the [Bug Tracker](https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/issues), this requires a free [GitHub](https://github.com/) account.
