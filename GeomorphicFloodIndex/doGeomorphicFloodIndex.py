@@ -615,17 +615,46 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             bands = ds_demcon.RasterCount# number of bands
 
             geotransform = ds_demcon.GetGeoTransform()#geotrasform functions list
-            prj=ds_demcon.GetProjectionRef()
-            spatialRef = osr.SpatialReference()
-            spatialRef.ImportFromEPSG(32633)
-
-            if prj is not None and len(prj)>0:
-                   self.textEdit.append( 'ok projection')
-
+            prj_demcon = ds_demcon.GetProjectionRef()
+            prj_demvoid = ds_demvoid.GetProjectionRef()
+            prj_flowdir = ds_flowdir.GetProjectionRef()
+            prj_flowacc = ds_flowacc.GetProjectionRef()
+            
+            
+            if calibration == 1 :
+                prj_floodhazard = ds_floodhazard.GetProjectionRef()
+                if ( prj_demcon != prj_demvoid or prj_demcon != prj_flowdir or prj_demcon != prj_flowacc or prj_demcon != prj_floodhazard or  
+                    prj_demvoid != prj_flowdir or prj_demvoid != prj_flowacc or prj_demvoid != prj_floodhazard or prj_flowdir != prj_flowacc or 
+                    prj_flowdir != prj_floodhazard or prj_flowacc != prj_floodhazard ) :
+                    self.textEdit.append('One or more input have different projection')
+                    self.textEdit.append('Dem Projection :' + prj_demvoid)
+                    self.textEdit.append('Filled DEM Projection :' + prj_demcon)
+                    self.textEdit.append('Flow Direction Projection :' + prj_demcon)
+                    self.textEdit.append('Flow Accumulation Projection :' + prj_flowacc)
+                    self.textEdit.append('Flood Hazard Projection :' + prj_floodhazard)  
+                    sys.exit(1)
+            else :
+                if ( prj_demcon != prj_demvoid or prj_demcon != prj_flowdir or prj_demcon != prj_flowacc or 
+                    prj_demvoid != prj_flowdir or prj_demvoid != prj_flowacc or prj_flowdir != prj_flowacc ) :
+                    self.textEdit.append('One or more input have different projection')
+                    self.textEdit.append('Dem Projection :' + prj_demvoid)
+                    self.textEdit.append('Filled DEM Projection :' + prj_demcon)
+                    self.textEdit.append('Flow Direction Projection :' + prj_demcon)
+                    self.textEdit.append('Flow Accumulation Projection :' + prj_flowacc)
+                    sys.exit(1)
+            
+            
+            prj_len = len(prj_demcon)
+            self.textEdit.append(str(len(prj_demcon)))
+            prj = prj_demcon
+            if prj_len>0:
+               self.textEdit.append('projection' + prj)               
             else:
-                   self.textEdit.append( 'import WGS84 utm 33N')
-            prj= spatialRef.ExportToWkt()
-
+               spatialRef = osr.SpatialReference()
+               spatialRef.ImportFromEPSG(32633)
+               projection = spatialRef.ExportToWkt()
+               self.textEdit.append('import WGS84 utm 33N')
+            
             originX = geotransform[0]#top left x
             originY = geotransform[3]#top left y
             #pixelWidth = geotransform[1]
