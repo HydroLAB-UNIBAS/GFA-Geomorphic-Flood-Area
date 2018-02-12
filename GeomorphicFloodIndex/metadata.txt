@@ -10,16 +10,15 @@
 
 [general]
 name=GeomorphicFloodArea
-description=GeomorphicFloodArea (GFA) is an Open Source software to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses. This algorithm uses the linear binary classification technique based on the recently proposed Geomorphic Flood Index (GFI).
+description=GFA - tool is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses.
+about=Samela, C., Albano, R., Sole, A., Manfreda, S. (2018). Geomorphic Flood Area (GFA): a QGIS tool for a cost-effective delineation of the flood-prone areas, Computers, Environment and Urban Systems, (doi: 10.1016/j.compenvurbsys.2018.01.013)
 category=Plugins
-version=1.0
-experimental=False
+version=2.0
 qgisMinimumVersion=2.0
 qgisMaximumVersion=2.99
 author= Raffaele ALbano, Caterina Samela, Salvatore Manfreda, Aurelia Sole
 email= raffaele.albano@unibas.it
 icon=icona.png
-changelog=Added compatibility to QGIS 2
 
 # end of mandatory metadata
 
@@ -34,8 +33,8 @@ tags=
 homepage=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area.git
 tracker=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area/issues
 repository=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area
-# ExampleDataset=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area-doc
-icon=icona.png
+ExampleDataset=https://github.com/HydroLAB-UNIBAS/GFA-Geomorphic-Flood-Area-doc
+
 # experimental flag
 experimental=False
 
