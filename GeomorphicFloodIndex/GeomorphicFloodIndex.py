@@ -22,15 +22,16 @@ This script initializes the plugin, making it known to QGIS.
 """
 
 # Import the PyQt and QGIS libraries
-from PyQt4.QtCore import * 
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import * 
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import QAction
 from qgis.core import *
 # Initialize Qt resources from file resources.py
-import resources
+from .resources import *
 # Import the code for the dialog
 #from FlowPathDown_BBDialog import FlowPathDown_BBDialog
-from Ui_GeomorphicFloodIndex import Ui_GeomorphicFloodIndex
-import doGeomorphicFloodIndex
+from .Ui_GeomorphicFloodIndex import Ui_GeomorphicFloodIndex
+from .doGeomorphicFloodIndex import *
 
 class GeomorphicFloodIndex: 
 
@@ -44,7 +45,8 @@ class GeomorphicFloodIndex:
         "GeomorphicFloodArea", self.iface.mainWindow())
 
     # connect the action to the run method
-    QObject.connect(self.action, SIGNAL("activated()"), self.run) 
+    # QObject.connect(self.action, SIGNAL("activated()"), self.run) 
+    self.action.triggered.connect(self.run)
 
     # Add toolbar button and menu item
     self.iface.addToolBarIcon(self.action)
@@ -54,11 +56,12 @@ class GeomorphicFloodIndex:
   def unload(self):
     # Remove the plugin menu item and icon
     self.iface.removePluginMenu("GFA",self.action)
+    self.iface.removeToolBarIcon(self.action)
   
 
   # run method that performs all the real work
   def run(self): 
    
-    dlg = doGeomorphicFloodIndex.GeomorphicFloodIndexDialog(self.iface)
+    dlg = GeomorphicFloodIndexDialog(self.iface)
     dlg.exec_()
         

@@ -13,9 +13,9 @@ name=GeomorphicFloodArea
 description=GFA - tool is an open-source QGIS plug-in to realize a fast and cost-effective delineation of the floodplains in the contexts where the available data is scarce to carry out hydrological/hydraulic analyses.
 about=Samela, C., Albano, R., Sole, A., Manfreda, S. (2018). Geomorphic Flood Area (GFA): a QGIS tool for a cost-effective delineation of the flood-prone areas, Computers, Environment and Urban Systems, (doi: 10.1016/j.compenvurbsys.2018.01.013)
 category=Plugins
-version=2.0
-qgisMinimumVersion=2.0
-qgisMaximumVersion=2.99
+version=3.0.0
+qgisMinimumVersion=3.16
+qgisMaximumVersion=3.99
 author= Raffaele ALbano, Caterina Samela, Salvatore Manfreda, Aurelia Sole
 email= raffaele.albano@unibas.it
 icon=icona.png
@@ -25,7 +25,9 @@ icon=icona.png
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-# changelog=
+changelog=
+    3.0.0 - initial port to QGIS 3, by Andrea Giudiceandrea
+    2.0 - original version 2.0
 
 # tags are comma separated with spaces allowed
 tags=
