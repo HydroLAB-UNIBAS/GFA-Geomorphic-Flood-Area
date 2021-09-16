@@ -23,5 +23,5 @@ This script initializes the plugin, making it known to QGIS.
 
 def classFactory(iface): 
   
-  from GeomorphicFloodIndex import GeomorphicFloodIndex 
+  from .GeomorphicFloodIndex import GeomorphicFloodIndex 
   return GeomorphicFloodIndex(iface)

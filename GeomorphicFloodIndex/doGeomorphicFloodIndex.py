@@ -20,12 +20,12 @@ contact                : http://www2.unibas.it/raffaelealbano/?page_id=115
 ***************************************************************************/
 This script initializes the plugin, making it known to QGIS.
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
 from qgis.core import *
 import qgis.utils
-from Ui_GeomorphicFloodIndex import Ui_GeomorphicFloodIndex
-from PyQt4.QtGui import QProgressBar
+from .Ui_GeomorphicFloodIndex import *
+from qgis.PyQt.QtWidgets import QProgressBar, QDialog
 import os, sys, time,  math
 from osgeo import gdal, ogr
 from osgeo.gdalconst import *
@@ -55,22 +55,36 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
         self.NOVALUE=-340282346638528859811704183484516925440.000000
         self.checkBoxManualSet.setChecked(True)
         self.checkBoxCalibration.setChecked(False)
-        self.connect(self.toolButtonDemCon, SIGNAL("clicked()"), self.demconFile)
-        self.connect(self.toolButtonDemVoid, SIGNAL("clicked()"), self.demvoidFile)
-        self.connect(self.toolButtonFlowDir, SIGNAL("clicked()"), self.flowdirFile)
-        self.connect(self.toolButtonFlowAcc, SIGNAL("clicked()"), self.flowaccFile)
-        self.connect(self.toolButtonSFM, SIGNAL("clicked()"), self.sfmFile)
+        # self.connect(self.toolButtonDemCon, SIGNAL("clicked()"), self.demconFile)
+        self.toolButtonDemCon.triggered.connect(self.demconFile)
+        # self.connect(self.toolButtonDemVoid, SIGNAL("clicked()"), self.demvoidFile)
+        self.toolButtonDemVoid.triggered.connect(self.demvoidFile)
+        # self.connect(self.toolButtonFlowDir, SIGNAL("clicked()"), self.flowdirFile)
+        self.toolButtonFlowDir.triggered.connect(self.flowdirFile)
+        # self.connect(self.toolButtonFlowAcc, SIGNAL("clicked()"), self.flowaccFile)
+        self.toolButtonFlowAcc.triggered.connect(self.flowaccFile)
+        # self.connect(self.toolButtonSFM, SIGNAL("clicked()"), self.sfmFile)
+        self.toolButtonSFM.triggered.connect(self.sfmFile)
 
-        self.connect(self.checkBoxCalibration,SIGNAL("clicked()"),self.calibration_clicked)
-        self.connect(self.checkBoxManualSet,SIGNAL("clicked()"),self.manualset_clicked)
+        # self.connect(self.checkBoxCalibration,SIGNAL("clicked()"),self.calibration_clicked)
+        self.checkBoxCalibration.stateChanged.connect(self.calibration_clicked)
+        # self.connect(self.checkBoxManualSet,SIGNAL("clicked()"),self.manualset_clicked)
+        self.checkBoxManualSet.stateChanged.connect(self.manualset_clicked)
 
-        self.connect(self.btnOutput, SIGNAL("clicked()"), self.outFile)
-        self.connect(self.btnOutputBin, SIGNAL("clicked()"), self.outFileBin)
-        self.connect(self.btnOutputWD, SIGNAL("clicked()"), self.outFileWD)
+        # self.connect(self.btnOutput, SIGNAL("clicked()"), self.outFile)
+        self.btnOutput.triggered.connect(self.outFile)
+        # self.connect(self.btnOutputBin, SIGNAL("clicked()"), self.outFileBin)
+        self.btnOutputBin.triggered.connect(self.outFileBin)
+        # self.connect(self.btnOutputWD, SIGNAL("clicked()"), self.outFileWD)
+        self.btnOutputWD.triggered.connect(self.outFileWD)
 
-        self.connect(self.buttonBox, SIGNAL("accepted()"),self.accept)
-        QObject.connect(self.buttonBox, SIGNAL("rejected()"),self, SLOT("reject()"))
-        QObject.connect(self.buttonBox, SIGNAL("helpRequested()"),self.call_help)
+        # self.connect(self.buttonBox, SIGNAL("accepted()"),self.accept)
+        self.buttonBox.accepted.connect(self.accept)
+        
+        # QObject.connect(self.buttonBox, SIGNAL("rejected()"),self, SLOT("reject()"))
+        self.buttonBox.rejected.connect(self.reject)
+        # QObject.connect(self.buttonBox, SIGNAL("helpRequested()"),self.call_help)
+        self.buttonBox.helpRequested.connect(self.call_help)
 
         mapCanvas = self.iface.mapCanvas()
         # init dictionaries of items:
@@ -947,9 +961,9 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             n_ok=len(id_ok)
             ln_hronHbin=numpy.zeros((rows,cols))
             for ct_ok in range(0,n_ok):
-                    print ct_ok
+                    print(ct_ok)
                     ct_label=id_ok[ct_ok]
-                    print ct_label
+                    print(ct_label)
                     ln_hronHbin[label_im==ct_label] = 1
 
            
