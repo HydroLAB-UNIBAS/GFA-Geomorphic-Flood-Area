@@ -20,17 +20,17 @@ contact                : http://www2.unibas.it/raffaelealbano/?page_id=115
 ***************************************************************************/
 This script initializes the plugin, making it known to QGIS.
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
 from qgis.core import *
 import qgis.utils
-from Ui_GeomorphicFloodIndex import Ui_GeomorphicFloodIndex
-from PyQt4.QtGui import QProgressBar
+from .Ui_GeomorphicFloodIndex import *
+from qgis.PyQt.QtWidgets import QProgressBar, QDialog, QMessageBox, QFileDialog
 import os, sys, time,  math
 from osgeo import gdal, ogr
 from osgeo.gdalconst import *
 from scipy import ndimage
-import osr
+from osgeo import osr
 import numpy
 #from sklearn import metrics
 import matplotlib.pyplot as plt
@@ -55,22 +55,36 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
         self.NOVALUE=-340282346638528859811704183484516925440.000000
         self.checkBoxManualSet.setChecked(True)
         self.checkBoxCalibration.setChecked(False)
-        self.connect(self.toolButtonDemCon, SIGNAL("clicked()"), self.demconFile)
-        self.connect(self.toolButtonDemVoid, SIGNAL("clicked()"), self.demvoidFile)
-        self.connect(self.toolButtonFlowDir, SIGNAL("clicked()"), self.flowdirFile)
-        self.connect(self.toolButtonFlowAcc, SIGNAL("clicked()"), self.flowaccFile)
-        self.connect(self.toolButtonSFM, SIGNAL("clicked()"), self.sfmFile)
+        # self.connect(self.toolButtonDemCon, SIGNAL("clicked()"), self.demconFile)
+        self.toolButtonDemCon.clicked.connect(self.demconFile)
+        # self.connect(self.toolButtonDemVoid, SIGNAL("clicked()"), self.demvoidFile)
+        self.toolButtonDemVoid.clicked.connect(self.demvoidFile)
+        # self.connect(self.toolButtonFlowDir, SIGNAL("clicked()"), self.flowdirFile)
+        self.toolButtonFlowDir.clicked.connect(self.flowdirFile)
+        # self.connect(self.toolButtonFlowAcc, SIGNAL("clicked()"), self.flowaccFile)
+        self.toolButtonFlowAcc.clicked.connect(self.flowaccFile)
+        # self.connect(self.toolButtonSFM, SIGNAL("clicked()"), self.sfmFile)
+        self.toolButtonSFM.clicked.connect(self.sfmFile)
 
-        self.connect(self.checkBoxCalibration,SIGNAL("clicked()"),self.calibration_clicked)
-        self.connect(self.checkBoxManualSet,SIGNAL("clicked()"),self.manualset_clicked)
+        # self.connect(self.checkBoxCalibration,SIGNAL("clicked()"),self.calibration_clicked)
+        # self.checkBoxCalibration.stateChanged.connect(self.calibration_clicked)
+        # self.connect(self.checkBoxManualSet,SIGNAL("clicked()"),self.manualset_clicked)
+        # self.checkBoxManualSet.stateChanged.connect(self.manualset_clicked)
 
-        self.connect(self.btnOutput, SIGNAL("clicked()"), self.outFile)
-        self.connect(self.btnOutputBin, SIGNAL("clicked()"), self.outFileBin)
-        self.connect(self.btnOutputWD, SIGNAL("clicked()"), self.outFileWD)
+        # self.connect(self.btnOutput, SIGNAL("clicked()"), self.outFile)
+        self.btnOutput.clicked.connect(self.outFile)
+        # self.connect(self.btnOutputBin, SIGNAL("clicked()"), self.outFileBin)
+        self.btnOutputBin.clicked.connect(self.outFileBin)
+        # self.connect(self.btnOutputWD, SIGNAL("clicked()"), self.outFileWD)
+        self.btnOutputWD.clicked.connect(self.outFileWD)
 
-        self.connect(self.buttonBox, SIGNAL("accepted()"),self.accept)
-        QObject.connect(self.buttonBox, SIGNAL("rejected()"),self, SLOT("reject()"))
-        QObject.connect(self.buttonBox, SIGNAL("helpRequested()"),self.call_help)
+        # self.connect(self.buttonBox, SIGNAL("accepted()"),self.accept)
+        self.buttonBox.accepted.connect(self.accept)
+        
+        # QObject.connect(self.buttonBox, SIGNAL("rejected()"),self, SLOT("reject()"))
+        self.buttonBox.rejected.connect(self.reject)
+        # QObject.connect(self.buttonBox, SIGNAL("helpRequested()"),self.call_help)
+        self.buttonBox.helpRequested.connect(self.call_help)
 
         mapCanvas = self.iface.mapCanvas()
         # init dictionaries of items:
@@ -139,7 +153,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
     def outFile(self):
         "Display file dialog for output file"
         self.lineOutput.clear()
-        outName = QFileDialog.getSaveFileName(self, "GFI output file",".", "GeoTiff (*.tif)")
+        outName, filter_string = QFileDialog.getSaveFileName(self, "GFI output file",".", "GeoTiff (*.tif)")
 
         if len(outName)>0:
                 self.lineOutput.clear()
@@ -149,7 +163,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
     def outFileBin(self):
         "Display file dialog for output file"
         self.lineOutputBin.clear()
-        outNameBin = QFileDialog.getSaveFileName(self, "GFI output file",".", "GeoTiff (*.tif)")
+        outNameBin, filter_string = QFileDialog.getSaveFileName(self, "GFI output file",".", "GeoTiff (*.tif)")
 
         if len(outNameBin)>0:
                 self.lineOutputBin.clear()
@@ -160,7 +174,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
     def outFileWD(self):
         "Display file dialog for output file"
         self.lineOutputWD.clear()
-        outNameWD = QFileDialog.getSaveFileName(self, "WD output file",".", "GeoTiff (*.tif)")
+        outNameWD, filter_string = QFileDialog.getSaveFileName(self, "WD output file",".", "GeoTiff (*.tif)")
 
         if len(outNameWD)>0:
                 self.lineOutputWD.clear()
@@ -169,49 +183,49 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
         return outNameWD
 
     def demconFile(self):
-        "Display file dialog for output file"
-        demconName = QFileDialog.getOpenFileName(self, "FILL Dem input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
+        "Display file dialog for input file"
+        demconName, filter_string = QFileDialog.getOpenFileName(self, "FILL Dem input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(demconName)>0:
                 self.cmbDemCon.insertItem (0, demconName)
                 self.cmbDemCon.setCurrentIndex(0)
         return demconName
 
     def demvoidFile(self):
-        "Display file dialog for output file"
-        demvoidName = QFileDialog.getOpenFileName(self, "Dem input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
+        "Display file dialog for input file"
+        demvoidName, filter_string = QFileDialog.getOpenFileName(self, "Dem input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(demvoidName)>0:
                 self.cmbDemVoid.insertItem (0, demvoidName)
                 self.cmbDemVoid.setCurrentIndex(0)
         return demvoidName
 
     def flowdirFile(self):
-        "Display file dialog for output file"
-        flowdirName = QFileDialog.getOpenFileName(self, "Flowdir input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
+        "Display file dialog for input file"
+        flowdirName, filter_string = QFileDialog.getOpenFileName(self, "Flowdir input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(flowdirName)>0:
                 self.cmbFlowDir.insertItem (0, flowdirName)
                 self.cmbFlowDir.setCurrentIndex(0)
         return flowdirName
 
     def flowaccFile(self):
-        "Display file dialog for output file"
-        flowaccName = QFileDialog.getOpenFileName(self, "Flowacc input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
+        "Display file dialog for input file"
+        flowaccName, filter_string = QFileDialog.getOpenFileName(self, "Flowacc input file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(flowaccName)>0:
                 self.cmbFlowAcc.insertItem (0, flowaccName)
                 self.cmbFlowAcc.setCurrentIndex(0)
         return flowaccName
 
     def sfmFile(self):
-        "Display file dialog for output file"
-        sfmName = QFileDialog.getOpenFileName(self, "Standard Flood Map calibration file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
+        "Display file dialog for input file"
+        sfmName, filter_string = QFileDialog.getOpenFileName(self, "Standard Flood Map calibration file",".", "ESRI ascii (*.txt);; GeoTiff (*.tif);;All files (*.*)")
         if len(sfmName)>0:
                 self.cmbSFM.insertItem (0, sfmName)
                 self.cmbSFM.setCurrentIndex(0)
         return sfmName
 
-    def calibration_clicked(self):
-        self.checkBoxManualSet.nextCheckState()
-    def manualset_clicked(self):
-        self.checkBoxCalibration.nextCheckState()
+    # def calibration_clicked(self, state):
+        # self.checkBoxManualSet.nextCheckState()
+    # def manualset_clicked(self):
+        # self.checkBoxCalibration.nextCheckState()
 ###########################################################################################
     def from_flowacc_to_stream(self,tab_flowacc,threshold_cell):
 
@@ -394,8 +408,7 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             format = "GTiff"
             driver = gdal.GetDriverByName( format )
             metadata = driver.GetMetadata()
-            if metadata.has_key(gdal.DCAP_CREATE) \
-                   and metadata[gdal.DCAP_CREATE] == 'YES':
+            if gdal.DCAP_CREATE in metadata and metadata[gdal.DCAP_CREATE] == 'YES':
                 pass
             else:
                 QMessageBox.information(None,"info","Driver %s does not support Create() method." % format)
@@ -947,9 +960,9 @@ class GeomorphicFloodIndexDialog(QDialog, Ui_GeomorphicFloodIndex):
             n_ok=len(id_ok)
             ln_hronHbin=numpy.zeros((rows,cols))
             for ct_ok in range(0,n_ok):
-                    print ct_ok
+                    print(ct_ok)
                     ct_label=id_ok[ct_ok]
-                    print ct_label
+                    print(ct_label)
                     ln_hronHbin[label_im==ct_label] = 1
 
            
